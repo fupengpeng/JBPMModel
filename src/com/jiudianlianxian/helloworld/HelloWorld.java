@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipInputStream;
 
@@ -42,8 +45,6 @@ public class HelloWorld {
 		ProcessEngine processEngine = conf.buildProcessEngine();//创建流程引擎对象
 	}
 	
-	
-	
 	/**
 	 * 创建流程引擎对象的方法
 	 */
@@ -65,16 +66,16 @@ public class HelloWorld {
 	@Test
 	public void test3() throws Exception{
 		// 方式一----从类路径下读取文件
-//		NewDeployment deployment = processEngine.getRepositoryService().createDeployment();//获取部署对象;
-//		deployment.addResourceFromClasspath("helloworld.jpdl.xml");//读取xml配置文件
-//		deployment.addResourceFromClasspath("helloworld.png");//读取图片文件
-//		String id = deployment.deploy();//完成部署
-//		System.out.println(id);
-		//  方式二----读取压缩文件流
 		NewDeployment deployment = processEngine.getRepositoryService().createDeployment();//获取部署对象;
-		deployment.addResourcesFromZipInputStream(new ZipInputStream(new FileInputStream(new File("E:\\MyEclipse\\workspacejavawebtestproject\\jbpmday1\\process\\hello.zip"))));
-		String id = deployment.deploy();
-		System.out.println("id = " + id );
+		deployment.addResourceFromClasspath("helloworld2.jpdl.xml");//读取xml配置文件
+		deployment.addResourceFromClasspath("helloworld2.png");//读取图片文件
+		String id = deployment.deploy();//完成部署
+		System.out.println(id);
+		//  方式二----读取压缩文件流
+//		NewDeployment deployment = processEngine.getRepositoryService().createDeployment();//获取部署对象;
+//		deployment.addResourcesFromZipInputStream(new ZipInputStream(new FileInputStream(new File("E:\\MyEclipse\\workspacejavawebtestproject\\JBPMModel\\process\\hello.zip"))));
+//		String id = deployment.deploy();
+//		System.out.println("id = " + id );
 	}
 	
 	
@@ -200,6 +201,58 @@ public class HelloWorld {
 //		for (Deployment d : list) {
 //			System.out.println("d.getId = " + d.getId()   + "    " + d.getName());
 //		}
+		
+	}
+	
+	/**
+	 * 查询对象的使用方式
+	 */
+	@Test
+	public void test11(){
+		//创建流程定义查询对象
+		ProcessDefinitionQuery query = processEngine.getRepositoryService().createProcessDefinitionQuery();
+		//添加过滤条件
+		query.processDefinitionKey("请假流程");
+		//添加排序条件
+		query.orderAsc(ProcessDefinitionQuery.PROPERTY_VERSION);
+		//添加分页条件
+		query.page(0, 10);
+//		query.page(10, 20);
+		List<ProcessDefinition> list = query.list();
+		for (ProcessDefinition pd : list) {
+			System.out.println("pd.getId = " + pd.getId()   + "  name = " + pd.getName() + "   key = " + pd.getKey());
+		}
+		
+	}
+	
+	/**
+	 * 获取最新版本的流程定义
+	 */
+	@Test
+	public void test12(){
+		//获取所有的流程定义
+		ProcessDefinitionQuery query = processEngine.getRepositoryService().createProcessDefinitionQuery();
+		query.orderAsc(ProcessDefinitionQuery.PROPERTY_VERSION);
+		List<ProcessDefinition> list = query.list();
+		Map<String, ProcessDefinition> map = new HashMap<String, ProcessDefinition>();
+		for (ProcessDefinition pd : list) {
+			String id = pd.getId();
+			String key = pd.getKey();
+			String name = pd.getName();
+			int version = pd.getVersion();
+//			System.out.println("Id = " + id   + "  version = " + version + "   key = " + key);
+		    map.put(key, pd);
+		}
+		
+		List<ProcessDefinition> pdList = new ArrayList<ProcessDefinition>(map.values());
+		for (ProcessDefinition pd : pdList) {
+			String id = pd.getId();
+			String key = pd.getKey();
+			String name = pd.getName();
+			int version = pd.getVersion();
+			System.out.println("Id = " + id   + "  version = " + version + "   key = " + key);
+		   
+		}
 		
 	}
 	
