@@ -77,11 +77,11 @@ public class ProcessVariableTest {
 //		pe.getExecutionService().startProcessInstanceByKey("报销流程", map);
 		
 		// 4.在办理任务时设置       设置流程变量
-		String taskId = "110004";
+		String taskId = "210002";
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("key6", "value6");
 		map.put("key7", "value7");
-		pe.getTaskService().completeTask(taskId,"to task2",map);
+		pe.getTaskService().completeTask(taskId,"to task1",map);
 
 		
 	}

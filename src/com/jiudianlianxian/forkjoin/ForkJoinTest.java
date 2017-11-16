@@ -48,7 +48,7 @@ public class ForkJoinTest {
 	@Test
 	public void startProcess() {
 		ProcessInstance pi = pe.getExecutionService()
-				.startProcessInstanceByKey("报销流程");
+				.startProcessInstanceByKey("购物流程");
 		System.out.println("启动一个流程实例  " + pi.getId());
 	}
 	
@@ -63,26 +63,23 @@ public class ForkJoinTest {
 		 * query.assignee("张三"); List<Task> list = query.list();
 		 */
 
-		String userId = "张三";
+		String userId = "商家";
 		List<Task> list2 = pe.getTaskService().findPersonalTasks(userId);
 
 		for (Task t : list2) {
-			System.out.println(t.getId() + " " + t.getName() + " "
+			System.out.println(t.getId() + "----" + t.getName() + "----"
 					+ t.getExecutionId());
 		}
 	}
 	/**
-	 * 办理任务，同时设置流程变量
+	 * 办理任务
 	 */
 	@Test
 	public void test1(){
 		
 		// 4.在办理任务时设置       设置流程变量
-		String taskId = "220002";
-		String outcome = "to exclusive1";
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("money", new Double(600));
-		pe.getTaskService().completeTask(taskId,outcome,map);
+		String taskId = "370001";
+		pe.getTaskService().completeTask(taskId);
 		
 
 	}
