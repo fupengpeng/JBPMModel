@@ -78,17 +78,6 @@ public class HelloWorld {
 //		System.out.println("id = " + id );
 	}
 	
-	
-	/**
-	 * 删除流程定义
-	 */
-	@Test
-	public void test4(){
-		String deploymentId = "1";
-		processEngine.getRepositoryService().deleteDeployment(deploymentId);
-//		processEngine.getRepositoryService().deleteDeploymentCascade("");
-	}
-
 	/**
 	 * 查询流程定义
 	 */
@@ -103,11 +92,21 @@ public class HelloWorld {
 			String id = processDefinition.getId();
 			String name = processDefinition.getName();
 			String key = processDefinition.getKey();
-			System.out.println("id = " + id + "   name = " + name + "   key = " + key);
+			String deploymentId = processDefinition.getDeploymentId();
+			System.out.println("id = " + id + "   name = " + name + "   key = " + key + "    deploymentId = " + deploymentId);
 		}
 		
 	}
 	
+	/**
+	 * 删除流程定义
+	 */
+	@Test
+	public void test4(){
+		String deploymentId = "1";
+		processEngine.getRepositoryService().deleteDeployment(deploymentId);
+	}
+
 	
 	/**
 	 * 获取流程定义文件
@@ -142,14 +141,14 @@ public class HelloWorld {
 	 */
 	@Test
 	public void test7(){
-		String processDefinitionId = "请假流程-2";
+//		String processDefinitionId = "请假流程-2";
+//		ProcessInstance processInstance = processEngine.getExecutionService().startProcessInstanceById(processDefinitionId);
+		
 		String key = "请假流程";
 		//启动流程后，产生流程实例对象
-//		ProcessInstance processInstance = processEngine.getExecutionService().startProcessInstanceById(processDefinitionId);
 		ProcessInstance processInstance = processEngine.getExecutionService().startProcessInstanceByKey(key);
 		String id = processInstance.getId();
 		String name = processInstance.getName();
-//		String key = processInstance.getKey();
 		System.out.println("id = " + id + "   name = " + name + "   key = " + key);
 		
 	}
